@@ -6,19 +6,23 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
+import android.provider.MediaStore
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.Spinner
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
+import java.io.File
 
 /**
  * @author Tanveer Shafee Prottoy
  */
-object CoreAppUtils {
+object AppUtils {
 
     fun showToastMessage(context: Context?, message: String, duration: Int) {
         Toast.makeText(context, message, duration).show()
@@ -33,21 +37,11 @@ object CoreAppUtils {
 
     fun showAlertDialog(context: Context, title: String?, msg: String?,
                         positiveBtnTxtId: Int, negativeBtnTxtId: Int,
-                        onPositiveClickListener: DialogInterface.OnClickListener,
-                        onNegativeClickListener: DialogInterface.OnClickListener) {
+                        onClickListener: DialogInterface.OnClickListener) {
         AlertDialog.Builder(context).setTitle(title).setMessage(msg)
-                .setPositiveButton(positiveBtnTxtId, onPositiveClickListener)
-                .setNegativeButton(negativeBtnTxtId, onNegativeClickListener)
+                .setPositiveButton(positiveBtnTxtId, onClickListener)
+                .setNegativeButton(negativeBtnTxtId, onClickListener)
                 .create().show()
-    }
-
-    fun createSpinnerAdapter(context: Context, stringArrayRes: Int, spinner: Spinner): ArrayAdapter<CharSequence> {
-        return ArrayAdapter.createFromResource(context, stringArrayRes,
-                android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = adapter
-        }
     }
 
     /**
@@ -114,7 +108,7 @@ object CoreAppUtils {
      */
     fun startActivityWithEmailIntent(context: Context, addresses: Array<String>) {
         val intent = Intent(Intent.ACTION_SENDTO)
-        intent.data = Uri.parse("mailto") // only email apps should handle this
+        intent.data = Uri.parse(Constants.MAIL_URI) // only email apps should handle this
         intent.putExtra(Intent.EXTRA_EMAIL, addresses)
         when(context) {
             is AppCompatActivity -> {
@@ -127,6 +121,45 @@ object CoreAppUtils {
                 throw TypeCastException()
             }
         }
+    }
+
+    /**
+     * @param context must be either AppCompatActivity, or support Fragment
+     * @throws TypeCastException
+     */
+    fun startActivityWithCameraIntent(file: File, context: Context, authorities: String, requestCode: Int, errorString: String) {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val outputUri = FileProvider.getUriForFile(context, authorities, file)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri)
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+        try {
+            when(context) {
+                is AppCompatActivity -> {
+                    context.startActivityForResult(intent, requestCode)
+                }
+                is Fragment -> {
+                    context.startActivityForResult(intent, requestCode)
+                }
+                else -> {
+                    throw TypeCastException()
+                }
+            }
+        }
+        catch(a: ActivityNotFoundException) {
+            showToastMessage(context.applicationContext, errorString, Toast.LENGTH_LONG)
+        }
+    }
+
+    fun isViewVisible(view: View): Boolean {
+        return view.visibility == View.VISIBLE
+    }
+
+    fun showView(view: View) {
+        view.visibility = View.VISIBLE
+    }
+
+    fun hideView(view: View) {
+        view.visibility = View.GONE
     }
 
     /**
@@ -146,10 +179,10 @@ object CoreAppUtils {
         editText.requestFocus()
     }
 
-    fun isProgressbarVisible(progressbarHolder: View): Boolean {
-        if(progressbarHolder.visibility == View.VISIBLE) {
-            return true
-        }
-        return false
+    fun createSpannableString(string: String, start: Int, end: Int, proportion: Float, color: Int): SpannableString {
+        val spannableString = SpannableString(string)
+        spannableString.setSpan(RelativeSizeSpan(proportion), start, end, 0) // set size
+        spannableString.setSpan(ForegroundColorSpan(color), start, end, 0)// set color
+        return spannableString
     }
 }

@@ -1,15 +1,15 @@
 package com.tanveershafeeprottoy.coreutils
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 
 /**
  * @author Tanveer Shafee Prottoy
  */
-object CoreActivityUtil {
+object ActivityUtils {
     private var fragmentTransaction: FragmentTransaction? = null
 
     fun addFragmentOnActivity(fragmentManager: FragmentManager?,
