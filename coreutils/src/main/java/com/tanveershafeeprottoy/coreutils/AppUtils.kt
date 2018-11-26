@@ -108,7 +108,7 @@ object AppUtils {
      */
     fun startActivityWithEmailIntent(context: Context, addresses: Array<String>) {
         val intent = Intent(Intent.ACTION_SENDTO)
-        intent.data = Uri.parse(Constants.MAIL_URI) // only email apps should handle this
+        intent.data = Uri.parse("mailto") // only email apps should handle this
         intent.putExtra(Intent.EXTRA_EMAIL, addresses)
         when(context) {
             is AppCompatActivity -> {

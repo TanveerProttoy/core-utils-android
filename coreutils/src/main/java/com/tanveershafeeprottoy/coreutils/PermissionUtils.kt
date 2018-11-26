@@ -1,16 +1,16 @@
 package com.tanveershafeeprottoy.coreutils
 
 import android.content.Context
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.tanveershafeeprottoy.coreutils.Constants.PERMISSION_GRANTED_CODE
 
 object PermissionUtils {
 
-    fun checkSmsPermission(context: Context): Boolean {
-        return ContextCompat.checkSelfPermission(context, Constants.PERMISSION_RECEIVE_SMS) == PERMISSION_GRANTED_CODE
+    fun checkSmsPermission(context: Context, permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
     }
 
     fun requestPermissions(appCompatActivity: AppCompatActivity, permissions: Array<String>, requestCode: Int) {
