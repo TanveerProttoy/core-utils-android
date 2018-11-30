@@ -17,15 +17,23 @@ object SharedPreferenceUtils {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply()
     }
 
-    fun read(context: Context, key: String, defaultValue: String): String? {
-        return PreferenceManager.getDefaultSharedPreferences(context).getString(key, defaultValue)
+    fun write(context: Context, key: String, value: Long) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(key, value).apply()
     }
 
-    fun read(context: Context, key: String, defaultValue: Int): Int {
-        return PreferenceManager.getDefaultSharedPreferences(context).getInt(key, defaultValue)
+    fun readString(context: Context, key: String): String? {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(key, "")
     }
 
-    fun read(context: Context, key: String, defaultValue: Boolean): Boolean {
-        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, defaultValue)
+    fun readInt(context: Context, key: String): Int {
+        return PreferenceManager.getDefaultSharedPreferences(context).getInt(key, -1)
+    }
+
+    fun readBoolean(context: Context, key: String): Boolean {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, false)
+    }
+
+    fun readLong(context: Context, key: String): Long {
+        return PreferenceManager.getDefaultSharedPreferences(context).getLong(key, (-1).toLong())
     }
 }
