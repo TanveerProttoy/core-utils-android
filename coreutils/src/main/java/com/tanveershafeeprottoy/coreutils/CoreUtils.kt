@@ -22,7 +22,8 @@ import java.io.File
 /**
  * @author Tanveer Shafee Prottoy
  */
-object AppUtils {
+
+object CoreUtils {
 
     fun showToastMessage(context: Context?, message: String, duration: Int) {
         Toast.makeText(context, message, duration).show()

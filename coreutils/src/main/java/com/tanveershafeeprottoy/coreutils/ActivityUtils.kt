@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction
 /**
  * @author Tanveer Shafee Prottoy
  */
+
 object ActivityUtils {
     private var fragmentTransaction: FragmentTransaction? = null
 
