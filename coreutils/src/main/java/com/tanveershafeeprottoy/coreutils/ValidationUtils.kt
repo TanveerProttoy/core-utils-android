@@ -21,12 +21,12 @@ object ValidationUtils {
         return true
     }
 
-    fun isValidInteger(integer: String): Int? {
-        return integer.toIntOrNull()
+    fun isValidInteger(integer: String): Boolean {
+        return integer.toIntOrNull() != null
     }
 
-    fun isValidDouble(double: String): Double? {
-        return double.toDoubleOrNull()
+    fun isValidDouble(double: String): Boolean {
+        return double.toDoubleOrNull() != null
     }
 
     fun isValidEmail(email: String): Boolean {
