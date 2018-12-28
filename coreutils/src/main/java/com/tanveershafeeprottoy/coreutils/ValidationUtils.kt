@@ -5,14 +5,14 @@ import android.util.Patterns
 
 object ValidationUtils {
 
-    fun isValidInput(string: String): Boolean {
+    fun isValidString(string: String): Boolean {
         if(TextUtils.isEmpty(string)) {
             return false
         }
         return true
     }
 
-    fun areValidInputs(vararg strings: String): Boolean {
+    fun areValidStrings(vararg strings: String): Boolean {
         for(string in strings) {
             if(TextUtils.isEmpty(string)) {
                 return false
