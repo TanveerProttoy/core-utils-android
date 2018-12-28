@@ -21,6 +21,14 @@ object ValidationUtils {
         return true
     }
 
+    fun isValidInteger(integer: String): Int? {
+        return integer.toIntOrNull()
+    }
+
+    fun isValidDouble(double: String): Double? {
+        return double.toDoubleOrNull()
+    }
+
     fun isValidEmail(email: String): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
